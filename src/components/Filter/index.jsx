@@ -17,7 +17,7 @@ const Filter = ({ selectedCategory, onCategoryChange, items }) => {
 
   return (
     <section>
-      <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-soft border border-white/20">
+      <div className="bg-white rounded-2xl p-6 shadow-soft border border-slate-200">
         <h1 className="font-playfair text-xl font-semibold text-slate-800 mb-6 pb-2 border-b border-slate-200">Categories</h1>
         <div className="flex flex-col gap-3">
           {categories.map(({ icon, category }) => (

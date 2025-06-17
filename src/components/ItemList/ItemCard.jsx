@@ -77,7 +77,7 @@ export default function ItemCard({ item }) {
   console.log('Image Error State:', imageError);
 
   return (
-    <div className="border border-slate-200 rounded-2xl p-4 shadow-soft hover:shadow-soft-hover transition-all duration-300 bg-white/90 backdrop-blur-sm w-80 h-48 overflow-hidden group">
+    <div className="border border-slate-200 rounded-2xl p-4 shadow-soft hover:shadow-soft-hover transition-all duration-300 bg-white w-80 h-48 overflow-hidden group">
       <div className="flex gap-3 h-full">
         {/* Image Section */}
         <div className="flex-shrink-0">
