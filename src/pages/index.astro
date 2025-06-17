@@ -2,20 +2,25 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import ShoppingSection from "../components/ShoppingSection";
 import Footer from "../components/Footer";
-const pageTitle = "Google Sheet Powered CMS";
+import SmallScreenMessage from "../components/SmallScreenMessage";
+const pageTitle = "Google Sheet Example";
 ---
 
 <BaseLayout pageTitle={pageTitle}>
-  <!-- Main content -->
-  <main class="flex flex-col min-h-screen">
+  <!-- Small screen message (hidden on sm and larger) -->
+  <div class="sm:hidden">
+    <SmallScreenMessage client:load/>
+  </div>
+
+  <!-- Main content (hidden on screens smaller than sm) -->
+  <main class="hidden sm:flex flex-col min-h-screen">
     <article class="flex-1">
       <div class="flex flex-col items-center p-12 bg-gradient-to-r from-emerald-500 to-teal-600 text-white relative overflow-hidden">
         <div class="absolute inset-0 bg-black/10"></div>
         <div class="relative z-10 text-center">
           <h1 class="font-playfair text-4xl font-bold mb-2">Headless CMS</h1>
           <p class="font-inter text-lg opacity-90 font-light">
-            powered by google sheets
-          </p>
+            using google sheets loL        </p>
         </div>
       </div>
 	  <section class="flex justify-center">
@@ -24,7 +29,7 @@ const pageTitle = "Google Sheet Powered CMS";
 				<h1 class="font-playfair text-4xl font-semibold text-slate-800 mb-2">
 					My Shopping Wishlist
 				</h1>
-				<p class="font-inter text-slate-600 text-lg">Discover and organize your favorite items</p>
+				<p class="font-inter text-slate-600 text-lg">Some text, idk </p>
 			</div>
 
 			<ShoppingSection client:load/>
@@ -35,11 +40,4 @@ const pageTitle = "Google Sheet Powered CMS";
 
     <Footer client:load/>
   </main>
-
-  <script>
-    // Redirect to small screen page if viewport is smaller than 640px
-    if (window.innerWidth < 640) {
-      window.location.href = '/small-screen';
-    }
-  </script>
 </BaseLayout>
