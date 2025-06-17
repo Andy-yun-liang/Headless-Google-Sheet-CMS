@@ -1,47 +1,58 @@
-# Astro Starter Kit: Minimal
+# Google Sheets Powered CMS
 
-```sh
-npm create astro@latest -- --template minimal
-```
+A lightweight content management system (CMS) powered by **Google Sheets** and **Google Apps Script**, designed to serve structured JSON data to any frontend like Astro, React, or Vue.
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/minimal)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/minimal)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/minimal/devcontainer.json)
+---
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+##  Features
 
-## 🚀 Project Structure
+- Edit content in a friendly Google Sheet UI  
+- Automatically serve content as a **JSON API endpoint**  
+- Perfect for personal sites, portfolios, or prototypes  
+- No backend infrastructure needed  
+- Works with Astro, Next.js, plain React, etc.
 
-Inside of your Astro project, you'll see the following folders and files:
+---
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
+## 📁 Sheet Format
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+| Item         | Category    | Pricing | Description                                     |
+|--------------|-------------|---------|-------------------------------------------------|
+| Blue Shorts  | clothing    | 25      | Very comfy shorts, perfect for the summer time. |
+| Green Scarf  | clothing    | 20      | Warm cotton scarf, perfect for snowy weather.   |
+| Laptop       | technology  | 500     | A great laptop with great specs.                |
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+Make sure the first row is a header row — this defines the object keys in your JSON output.
 
-Any static assets, like images, can be placed in the `public/` directory.
+---
 
-## 🧞 Commands
+## How It Works
 
-All commands are run from the root of the project, from a terminal:
+1. Data is stored in a public Google Sheet
+2. Google Apps Script turns the sheet into a live JSON API
+3. Your frontend fetches and renders this data
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+---
 
-## 👀 Want to learn more?
+## Deployment (Google Apps Script)
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+1. Open the sheet and go to **Extensions > Apps Script**
+2. Replace the default code with:
+
+```js
+function doGet() {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Sheet1");
+  const data = sheet.getDataRange().getValues();
+  const headers = data[0];
+  const rows = data.slice(1);
+
+  const output = rows.map(row => {
+    let obj = {};
+    headers.forEach((key, i) => obj[key] = row[i]);
+    return obj;
+  });
+
+  return ContentService
+    .createTextOutput(JSON.stringify(output))
+    .setMimeType(ContentService.MimeType.JSON);
+}
